@@ -1,0 +1,8 @@
+transformers
+datasets
+nltk
+scikit-learn
+Pillow
+numpy
+pandas
+
