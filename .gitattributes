@@ -1,0 +1,2 @@
+demo/image_embeddings_best.pt filter=lfs diff=lfs merge=lfs -text
+demo/caption_embeddings_best.pt filter=lfs diff=lfs merge=lfs -text
