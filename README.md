@@ -70,7 +70,7 @@ For the VQA task, we apply our method on the DAQUAR dataset using various combin
     ```
 * Other requirements
     ```bash
-    pip install -r requirements
+    pip install -r requirements.txt
     ```
 ## Datasets
 
@@ -111,4 +111,4 @@ For the VQA task, the following dataset is used:
 
 # Demo
 
-We suggest creating notebooks demo in the directory demo, utilizing pre-trained weights stored in the weights directory, where the addition operation is employed.
+Use colab demo in the directory Demo.
