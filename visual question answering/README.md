@@ -1,4 +1,4 @@
-# OneEncoder: A LightWeight Framework For Cross-Modal Representation Learning
+# A LightWeight Framework For Cross-Modal Representation Learning
 
 ## Abstract
 Cross-modal alignment learning combines information from text, images, audio, and video to create unified models for tasks like visual question answering and audiovisual analysis. Current methods rely on large, modality-specific encoders trained on vast aligned datasets, which is costly, difficult, and time-consuming. To address this, we propose OneEncoder, a lightweight framework that progressively aligns four modalities. Initially aligning image and text, OneEncoder then integrates other modalities without retraining the entire system. Efficient and cost-effective, it performs well on small paired datasets, surpassing methods dependent on large datasets and specialized encoders.
@@ -46,7 +46,7 @@ For the VQA task, we apply our method on the DAQUAR dataset using various combin
     ```
 * Other requirements
     ```bash
-    pip install -r requirements
+    pip install -r requirements.txt
     ```
 ## Datasets
 
