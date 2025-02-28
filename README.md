@@ -54,12 +54,13 @@ python albert_beit.py
 - **For VQA:** Addition, Scaled Dot Product Attention
 
 ## 🧠 Demos
-- [Colab Demo](Demo)
-- [Hugging Face Spaces](https://huggingface.co/spaces/bilalfaye/OneEncoder-retriever)
+- [Colab Demo](https://github.com/b-faye/OneEncoder/tree/main/demo)
+- [Hugging Face Spaces Application Demo](https://huggingface.co/spaces/bilalfaye/OneEncoder-retriever)
 - Pretrained Models:
   - Text & Image → [HF Model](https://huggingface.co/bilalfaye/OneEncoder-text-image)
   - Text, Image & Audio → [HF Model](https://huggingface.co/bilalfaye/OneEncoder-text-image-audio)
   - Text, Image & Video → [HF Model](https://huggingface.co/bilalfaye/OneEncoder-text-image-video)
+  - Text, Image & X-Ray Image → [HF Model](https://huggingface.co/bilalfaye/OneEncoder-text-image-xray)
 
 ---
 🔧 **Default Training Config:** `temperature = 2.5`, fusion via `addition`
