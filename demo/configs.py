@@ -8,7 +8,7 @@ class CFG:
     max_length = 128
     batch_size = 32
     num_workers = 4
-    projection_dim = 768
+    projection_dim = 256
     dropout_rate = 0.1
     num_head = 4
     num_layers = 1
@@ -27,6 +27,7 @@ class CFG:
     epochs = 100
     image_size = 224
     device = "cpu"
+    token_dim=3
     data_directory = "datasets"
     train_annotation_file = os.path.join(data_directory, "annotations", "captions_train2014.json")
     val_annotation_file = os.path.join(data_directory, "annotations", "captions_val2014.json")

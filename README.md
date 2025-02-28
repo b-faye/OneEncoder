@@ -1,114 +1,66 @@
-# A Lightweight Framework for Efficient Multimodal Training
+# OneEncoder: A Lightweight Framework for Multimodal Training
 
-## Abstract
-Cross-modal alignment learning combines information from text, images, audio, and video to create unified models for tasks like visual question answering and audiovisual analysis. Current methods rely on large, modality-specific encoders trained on vast aligned datasets, which is costly, difficult, and time-consuming. To address this, we propose OneEncoder, a lightweight framework that progressively aligns four modalities. Initially aligning image and text, OneEncoder then integrates other modalities without retraining the entire system. Efficient and cost-effective, it performs well on small paired datasets, surpassing methods dependent on large datasets and specialized encoders.
+OneEncoder is a streamlined framework for aligning multiple modalities (text, image, audio, video) using a progressive training approach. It reduces training costs by aligning new modalities without retraining the entire system, achieving strong results even on small datasets.
 
+## 🚀 Key Features
+- **Progressive Modality Alignment:**
+  - Step 1: Align image and text with a Universal Projection (UP) module.
+  - Step 2: Freeze UP, train an Alignment Layer to integrate audio, video, and more.
+- **Efficient and Cost-Effective:** Works well on small paired datasets, outperforming large-scale models with specialized encoders.
+- **Flexible Backbone Choices:** Supports various image and text encoders (e.g., ALBERT, BERT, RoBERTa, ViT, DeiT, BeiT).
 
-## Repository Organization
+## 🏁 Quickstart
 
-This repository contains two main applications:
+### Installation
+```bash
+conda create -n OneEncoder python=3.9 pip
+conda activate OneEncoder
+conda install pytorch=2.1.1 torchvision=0.16.1 cudatoolkit=12.1 -c pytorch
+pip install -r requirements.txt
+```
 
-- Contrastive Learning for Modality Alignment
-- Visual Question Answering (VQA) Task
+### Datasets
+Update dataset paths in the config file or class `CFG`.
 
-## Contrastive Learning for Modality Alignment
+- **Image-Text Alignment:** [COCO Captions](https://www.kaggle.com/datasets/nikhil7280/coco-image-caption), [Flickr30k](https://www.kaggle.com/datasets/hsankesara/flickr-image-dataset), [TextCaps](https://huggingface.co/datasets/lmms-lab/TextCaps)
+- **Audio Integration:** [ibriSpeech SRA](https://huggingface.co/datasets/nguyenvulebinh/asr-alignment)
+- **Video Integration:** [MSR-VTT](https://huggingface.co/datasets/AlexZigma/msr-vtt)
+- **X-ray Integration:** [ROCO Dataset](https://www.kaggle.com/datasets/virajbagal/roco-dataset)
+- **Visual QA:** [DAQUAR](https://www.kaggle.com/datasets/tezansahu/processed-daquar-dataset)
 
-We use a progressive approach to align multiple modalities:
+## 📘 Usage
 
-- **Step 1**: Train only the Universal Projection module (UP) to align image and text.
-- **Step 2**: Freeze the pretrained UP and train an Alignment Layer (AL) to progressively align audio and video with the already aligned image and text.
+Train the UP for image-text alignment:
+```bash
+cd "contrastive learning/text-image/addition"
+python text_image.py
+```
 
-<center><b>Step 1: Train only the UP to align image and text modalities</b></center><br>
+Freeze UP, train the Alignment Layer for new modalities:
+```bash
+mv "contrastive learning/text-image/addition/best.pt" "contrastive learning/audio-image/addition/text_image.pt"
+cd "contrastive learning/audio-image/addition"
+python audio_image.py
+```
 
-![Step 1](images/step_1.png)
+Run Visual QA:
+```bash
+cd "visual question answering/albert and beit"
+python albert_beit.py
+```
 
-<center><b>Step 2: Freeze the UP and train only the Alignment Layer to integrate new modalities (e.g., audio, video)</b></center><br>
+## 🛠️ Fusion Operations
+- **For Alignment:** Addition, Multiplication, Concatenation, Attention
+- **For VQA:** Addition, Scaled Dot Product Attention
 
-![Step 2](images/step_2.png)
+## 🧠 Demos
+- [Colab Demo](Demo)
+- [Hugging Face Spaces](https://huggingface.co/spaces/bilalfaye/OneEncoder-retriever)
+- Pretrained Models:
+  - Text & Image → [HF Model](https://huggingface.co/bilalfaye/OneEncoder-text-image)
+  - Text, Image & Audio → [HF Model](https://huggingface.co/bilalfaye/OneEncoder-text-image-audio)
+  - Text, Image & Video → [HF Model](https://huggingface.co/bilalfaye/OneEncoder-text-image-video)
 
+---
+🔧 **Default Training Config:** `temperature = 2.5`, fusion via `addition`
 
-## Visual Question Answering (VQA) Task
-
-For the VQA task, we apply our method on the DAQUAR dataset using various combinations of feature extractors:
-
-- ALBERT + BeiT
-- ALBERT + DeiT
-- ALBERT + ViT
-- BERT + BeiT
-- BERT + DeiT
-- BERT + ViT
-- RoBERTa + BeiT
-- RoBERTa + DeiT
-- RoBERTa + ViT
-
-<center><b>OneEncoder on VQA:</b> The image encoder can be replaced by BeiT, DeiT, or ViT, while the text encoder can be swapped with ALBERT, BERT, or RoBERTa.</center><br>
-
-![Step 2](images/vqa.png)
-
-
-## Installation
-### Requirements
-* Linux, CUDA >= 12.1
-* Python >= 3.9
-
-    We recommend you to use Anaconda to create a conda environment:
-
-    ```bash
-    conda create -n OneEncoder python=3.9 pip
-    ```
-
-    Then, activate the environment:
-    ```bash
-    conda activate OneEncoder
-    ```
-
-* Pytorch >= 2.1.1
-
-    For example, if your CUDA version is 12.1, you could install pytorch and torchvision as following:
-    ```bash
-    conda install pytorch=2.1.1 torchvision=0.16.1 cudatoolkit=12.1 -c pytorch
-    ```
-* Other requirements
-    ```bash
-    pip install -r requirements.txt
-    ```
-## Datasets
-
-All datasets are located in the `datasets` directory.
-
-### Contrastive Learning for Modality Alignment
-
-To train the Universal Projection (UP) module using the contrastive learning method, the following datasets are utilized:
-
-- [COCO Captions](https://www.kaggle.com/datasets/nikhil7280/coco-image-caption)
-- [Flickr30k](https://www.kaggle.com/datasets/hsankesara/flickr-image-dataset)
-- [TextCaps](https://huggingface.co/datasets/lmms-lab/TextCaps)
-
-### Audio Modality Integration
-
-To integrate the audio modality, the following dataset is used:
-
-- [ibriSpeech Speech Recognition Alignment (SRA)](https://huggingface.co/datasets/nguyenvulebinh/asr-alignment)
-
-### Video Modality Integration
-
-To integrate the video modality, the following dataset is used:
-
-- [Microsoft Research Video to Text (MSR-VTT)](https://huggingface.co/datasets/AlexZigma/msr-vtt)
-
-### X-ray Image Modality Integration
-
-To integrate the X-ray image modality, the following dataset is used:
-
-- [ROCO Dataset](https://www.kaggle.com/datasets/virajbagal/roco-dataset)
-
-### Visual Question Answering (VQA) Task
-
-For the VQA task, the following dataset is used:
-
-- [DAQUAR](https://www.kaggle.com/datasets/tezansahu/processed-daquar-dataset)
-
-
-# Demo
-
-Use colab demo in the directory Demo.

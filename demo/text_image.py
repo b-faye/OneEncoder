@@ -194,26 +194,37 @@ class TextEncoder(nn.Module):
 
 
 class ModalityTokenEncoder(nn.Module):
-    def __init__(self, projection_dim=CFG.projection_dim, token_size=CFG.token_size, device='cpu', *args, **kwargs):
+    def __init__(self, projection_dim=CFG.projection_dim, token_size=CFG.token_size, device='cpu', token_dim=CFG.token_dim, *args, **kwargs):
         """
         Modality token encoder module for encoding modality token information.
 
         :param projection_dim: Dimensionality of projected features (default: CFG.projection_dim).
         :param token_size: Token size.
         :param device: Device to run the module on (default: 'cpu').
+        :param token_dim: Dimension of tokens
         """
         super(ModalityTokenEncoder, self).__init__(*args, **kwargs)
         # Attributes
         self.projection_dim = projection_dim
         self.device = device
         self.token_size = token_size
+        self.token_dim = token_dim
         # Models
         text_variance = torch.rand(1) * 0.5 + 0.1
         image_variance = torch.rand(1) * 0.5 + 0.1
         self.text_token = nn.Parameter(torch.normal(mean=0, std=text_variance.item(),
-                                                    size=(self.token_size, self.projection_dim)).to(self.device))
+                                                      size=(self.token_size, self.token_dim)).to(self.device))
         self.image_token = nn.Parameter(torch.normal(mean=0, std=image_variance.item(),
-                                                     size=(self.token_size, self.projection_dim)).to(self.device))
+                                                       size=(self.token_size, self.token_dim)).to(self.device))
+        # Projection
+        self.token_projection = nn.Sequential(
+            nn.Linear(self.token_dim, 64),
+            nn.ReLU(),
+            nn.Linear(64, 128),
+            nn.ReLU(),
+            nn.Linear(128, self.projection_dim),
+            nn.LayerNorm(self.projection_dim)
+        )
 
     def forward(self, modality_type):
         """
@@ -223,7 +234,8 @@ class ModalityTokenEncoder(nn.Module):
         :return: Projected features.
         """
         token = torch.where(torch.tensor(modality_type == "image"), self.image_token, self.text_token)
-        return token
+        token_features = self.token_projection(token)
+        return token_features
 
     def __call__(self, modality_type):
         """
@@ -233,7 +245,6 @@ class ModalityTokenEncoder(nn.Module):
         :return: Projected features.
         """
         return self.forward(modality_type)
-
 
 class UniversalProjectionOutput:
     def __init__(self, outputs):

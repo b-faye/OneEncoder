@@ -1,78 +1,36 @@
-# A LightWeight Framework For Cross-Modal Representation Learning
+# OneEncoder: A Lightweight Framework for Multimodal Training
 
-## Abstract
-Cross-modal alignment learning combines information from text, images, audio, and video to create unified models for tasks like visual question answering and audiovisual analysis. Current methods rely on large, modality-specific encoders trained on vast aligned datasets, which is costly, difficult, and time-consuming. To address this, we propose OneEncoder, a lightweight framework that progressively aligns four modalities. Initially aligning image and text, OneEncoder then integrates other modalities without retraining the entire system. Efficient and cost-effective, it performs well on small paired datasets, surpassing methods dependent on large datasets and specialized encoders.
+OneEncoder is a streamlined framework for aligning multiple modalities (text, image, audio, video) using a progressive training approach. It reduces training costs by aligning new modalities without retraining the entire system, achieving strong results even on small datasets.
 
-## Visual Question Answering (VQA) Task
+## 🚀 Key Features
+- **Progressive Modality Alignment:**
+  - Step 1: Align image and text with a Universal Projection (UP) module.
+  - Step 2: Freeze UP, train an Alignment Layer to integrate audio, video, and more.
+- **Efficient and Cost-Effective:** Works well on small paired datasets, outperforming large-scale models with specialized encoders.
+- **Flexible Backbone Choices:** Supports various image and text encoders (e.g., ALBERT, BERT, RoBERTa, ViT, DeiT, BeiT).
 
-For the VQA task, we apply our method on the DAQUAR dataset using various combinations of feature extractors:
+## 🏁 Quickstart
 
-- DistilBERT + BeiT
-- DistilBERT + DeiT
-- DistilBERT + ViT
-- BERT + BeiT
-- BERT + DeiT
-- BERT + ViT
-- RoBERTa + BeiT
-- RoBERTa + DeiT
-- RoBERTa + ViT
+### Datasets
+- **Visual QA:** [DAQUAR](https://www.kaggle.com/datasets/tezansahu/processed-daquar-dataset)
 
-<center><b>OneEncoder on VQA:</b> The image encoder can be replaced by BeiT, DeiT, or ViT, while the text encoder can be swapped with DistilBERT, BERT, or RoBERTa.</center><br>
-
-![Step 2](images/vqa.png)
-
-
-## Installation
-### Requirements
-* Linux, CUDA >= 12.1
-* Python >= 3.9
-
-    We recommend you to use Anaconda to create a conda environment:
-
-    ```bash
-    conda create -n OneEncoder python=3.9 pip
-    ```
-
-    Then, activate the environment:
-    ```bash
-    conda activate OneEncoder
-    ```
-
-* Pytorch >= 2.1.1
-
-    For example, if your CUDA version is 12.1, you could install pytorch and torchvision as following:
-    ```bash
-    conda install pytorch=2.1.1 torchvision=0.16.1 cudatoolkit=12.1 -c pytorch
-    ```
-* Other requirements
-    ```bash
-    pip install -r requirements.txt
-    ```
-## Datasets
-
-All datasets are located in the `datasets` directory.
-
-### Visual Question Answering (VQA) Task
-
-For the VQA task, the following dataset is used:
-
-- [DAQUAR](https://www.kaggle.com/datasets/tezansahu/processed-daquar-dataset)
-
-
-
-# Training and Validation
-
-To train using for example bert and beit:
-
+## 📘 Usage
+Run Visual QA:
 ```bash
-cd "bert and beit"
-python3 bert_beit.py
+cd "albert and beit"
+python albert_beit.py
 ```
 
+## 🛠️ Fusion Operations
+- **For VQA:** Addition, Scaled Dot Product Attention
 
+## 🧠 Demos
+- [Colab Demo](Demo)
+- [Hugging Face Spaces](https://huggingface.co/spaces/bilalfaye/OneEncoder-retriever)
+- Pretrained Models:
+  - Text & Image → [HF Model](https://huggingface.co/bilalfaye/OneEncoder-text-image)
+  - Text, Image & Audio → [HF Model](https://huggingface.co/bilalfaye/OneEncoder-text-image-audio)
+  - Text, Image & Video → [HF Model](https://huggingface.co/bilalfaye/OneEncoder-text-image-video)
 
-# Demo
-
-<center><b>Querying Results</b></center><br>
-
-![Step 2](images/vqa_example.png)
+---
+🔧 **Default Training Config:** `temperature = 2.5`, fusion via `addition`

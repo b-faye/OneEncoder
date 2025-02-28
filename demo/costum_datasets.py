@@ -11,7 +11,7 @@ import soundfile as sf
 
 
 # Load Coco dataset
-def download_dataset(data_dir="../datasets"):
+def download_dataset(data_dir="datasets"):
     # Create caption and image directories
     annotations_dir = os.path.join(data_dir, "annotations")
     images_dir = os.path.join(data_dir, "train2014")

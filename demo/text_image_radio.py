@@ -70,19 +70,29 @@ class RadioEncoder(nn.Module):
 
 
 class ModalityTokenEncoder(nn.Module):
-    def __init__(self, projection_dim=CFG.projection_dim, token_size=CFG.token_size, device='cpu', *args, **kwargs):
+    def __init__(self, projection_dim=CFG.projection_dim, token_size=CFG.token_size, device='cpu', token_dim=CFG.token_dim, *args, **kwargs):
         super(ModalityTokenEncoder, self).__init__(*args, **kwargs)
         # Attributes
         self.projection_dim = projection_dim
         self.device = device
         self.token_size = token_size
+        self.token_dim = token_dim
         # Models
-        radio_variance = torch.rand(1) * 0.5 + 0.1
-        self.radio_token = nn.Parameter(torch.normal(mean=0, std=radio_variance.item(),
-                                                     size=(self.token_size, self.projection_dim)).to(self.device))
+        audio_variance = torch.rand(1) * 0.5 + 0.1
+        self.radio_token = nn.Parameter(torch.normal(mean=0, std=audio_variance.item(),
+                                                      size=(self.token_size, self.token_dim)).to(self.device))
+
+        self.token_projection = nn.Sequential(
+            nn.Linear(self.token_dim, 64),
+            nn.ReLU(),
+            nn.Linear(64, 128),
+            nn.ReLU(),
+            nn.Linear(128, self.projection_dim),
+            nn.LayerNorm(self.projection_dim)
+        )
 
     def forward(self):
-        return self.radio_token
+        return self.token_projection(self.radio_token)
 
     def __call__(self):
         return self.forward()
