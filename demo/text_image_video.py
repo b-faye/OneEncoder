@@ -63,7 +63,7 @@ def sample_frame_indices(clip_len, frame_sample_rate, seg_len):
     return indices
 
 class AlignmentLayer(nn.Module):
-    def __init__(self, input_dim=768, projection_dim=CFG.projection_dim, dropout_rate=CFG.dropout_rate, *args, **kwargs):
+    def __init__(self, input_dim=CFG.projection_dim, projection_dim=CFG.projection_dim, dropout_rate=CFG.dropout_rate, *args, **kwargs):
 
         super(AlignmentLayer, self).__init__(*args, **kwargs)
         # Attributes
@@ -216,7 +216,7 @@ class OneEncoder(nn.Module):
     def encode_video(self, videos):
         """
         :param videos: torch.Size([batch, 16, 3, 224, 224])
-        :return: torch.Size([batch, 1568, 768])
+        :return: torch.Size([batch, 1568, CFG.projection_dim])
         """
         video_features = self.video_encoder(videos.to(self.device))
         modality_token_features = self.modality_token_encoder()
