@@ -22,7 +22,7 @@ import av # pip install av
 import pandas as pd
 from configs import CFG
 from text_image import OneEncoder as TextImageEncoder
-
+from huggingface_hub import PyTorchModelHubMixin
 
 def read_video_pyav(container, indices):
     """
@@ -149,7 +149,7 @@ class ModalityTokenEncoder(nn.Module):
         return self.forward()
 
 
-class OneEncoder(nn.Module):
+class OneEncoder(nn.Module, PyTorchModelHubMixin):
     def __init__(self, device='cpu', modality_token_encoder=ModalityTokenEncoder(), checkpoint="bilalfaye/OneEncoder-text-image",
                  video_processor=AutoImageProcessor.from_pretrained("MCG-NJU/videomae-base"),
                  video_encoder=VideoEncoder(), *args, **kwargs):
