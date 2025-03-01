@@ -69,7 +69,7 @@ class RadioEncoder(nn.Module):
         return self.forward(inputs)
 
 
-class ModalityTokenEncoder(nn.Module, PyTorchModelHubMixin):
+class ModalityTokenEncoder(nn.Module):
     def __init__(self, projection_dim=CFG.projection_dim, token_size=CFG.token_size, device='cpu', token_dim=CFG.token_dim, *args, **kwargs):
         super(ModalityTokenEncoder, self).__init__(*args, **kwargs)
         # Attributes
@@ -98,7 +98,7 @@ class ModalityTokenEncoder(nn.Module, PyTorchModelHubMixin):
         return self.forward()
 
 
-class OneEncoder(nn.Module):
+class OneEncoder(nn.Module,  PyTorchModelHubMixin):
     def __init__(self, device='cpu', modality_token_encoder=ModalityTokenEncoder(),
                  checkpoint="bilalfaye/OneEncoder-text-image",
                  radio_processor=AutoImageProcessor.from_pretrained("microsoft/rad-dino"),
