@@ -14,7 +14,7 @@ from text_image import OneEncoder as TextImageEncoder
 
 
 class AlignmentLayer(nn.Module):
-    def __init__(self, input_dim=768, projection_dim=CFG.projection_dim, dropout_rate=CFG.dropout_rate, *args,
+    def __init__(self, input_dim=CFG.projection_dim, projection_dim=CFG.projection_dim, dropout_rate=CFG.dropout_rate, *args,
                  **kwargs):
         super(AlignmentLayer, self).__init__(*args, **kwargs)
         # Attributes
