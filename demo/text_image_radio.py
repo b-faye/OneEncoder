@@ -10,7 +10,7 @@ from transformers import BertModel, BertTokenizer, AutoModel, AutoImageProcessor
 
 from configs import CFG
 from text_image import OneEncoder as TextImageEncoder
-
+from huggingface_hub import PyTorchModelHubMixin
 
 
 class AlignmentLayer(nn.Module):
@@ -69,7 +69,7 @@ class RadioEncoder(nn.Module):
         return self.forward(inputs)
 
 
-class ModalityTokenEncoder(nn.Module):
+class ModalityTokenEncoder(nn.Module, PyTorchModelHubMixin):
     def __init__(self, projection_dim=CFG.projection_dim, token_size=CFG.token_size, device='cpu', token_dim=CFG.token_dim, *args, **kwargs):
         super(ModalityTokenEncoder, self).__init__(*args, **kwargs)
         # Attributes
@@ -134,4 +134,3 @@ class OneEncoder(nn.Module):
         radio_token = self.modality_token_encoder()
         outputs = self.text_image_encoder.universal_projection_encoder([features, radio_token]).last_hidden_state
         return outputs
-
