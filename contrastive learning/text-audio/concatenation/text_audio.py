@@ -209,7 +209,7 @@ class ModalityTokenEncoder(nn.Module):
 
 class OneEncoder(nn.Module):
     def __init__(self, device='cpu', modality_token_encoder=ModalityTokenEncoder(),
-                 checkpoint="../text_image_add/text_image.pt",
+                 checkpoint="text_image.pt",
                  audio_processor=AutoProcessor.from_pretrained("facebook/wav2vec2-base-960h"),
                  sample_rate=CFG.sample_rate, audio_encoder=AudioEncoder(), *args, **kwargs):
         super(OneEncoder, self).__init__(*args, **kwargs)
